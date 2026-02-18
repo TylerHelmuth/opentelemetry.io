@@ -14,15 +14,13 @@ file-based routing to layout the screens for the app.
 The application uses the OpenTelemetry packages to instrument the application at
 the JS layer.
 
-{{% alert title="Important" color="warning" %}}
-
-The JS OTel packages are supported for node and web environments. While they
-work for React Native as well, they are not explicitly supported for that
-environment, where they might break compatibility with minor version updates or
-require workarounds. Building JS OTel package support for React Native is an
-area of active development.
-
-{{% /alert %}}
+> [!CAUTION]
+>
+> The JS OTel packages are supported for node and web environments. While they
+> work for React Native as well, they are not explicitly supported for that
+> environment, where they might break compatibility with minor version updates
+> or require workarounds. Building JS OTel package support for React Native is
+> an area of active development.
 
 The main entry point for the application is `app/_layout.tsx` where a hook is
 used to initialize the instrumentation and make sure it is loaded before
@@ -50,7 +48,7 @@ import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { XMLHttpRequestInstrumentation } from '@opentelemetry/instrumentation-xml-http-request';
 import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
-import { Resource } from '@opentelemetry/resources';
+import { resourceFromAttributes } from '@opentelemetry/resources';
 import {
   ATTR_DEVICE_ID,
   ATTR_OS_NAME,
@@ -72,7 +70,7 @@ import { SessionIdProcessor } from '@/utils/SessionIdProcessor';
 const Tracer = async () => {
   const localhost = await getLocalhost();
 
-  const resource = new Resource({
+  const resource = resourceFromAttributes({
     [ATTR_SERVICE_NAME]: 'react-native-app',
     [ATTR_OS_NAME]: Platform.OS,
     [ATTR_OS_VERSION]: getSystemVersion(),

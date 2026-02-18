@@ -3,7 +3,7 @@ title: Componentes
 description: Componentes que forman OpenTelemetry
 aliases: [data-collection]
 weight: 20
-default_lang_commit: 9b7da35fd7abd77d867177902b36d95e5f322182
+default_lang_commit: 99a39c5e4e51daba968bfbb3eb078be4a14ad363
 ---
 
 OpenTelemetry está compuesto por varios componentes principales:

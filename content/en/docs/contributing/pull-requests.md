@@ -15,23 +15,41 @@ To contribute new or improve existing documentation, submit a [pull request][PR]
 - Otherwise, see [Work from a local fork](#fork-the-repo) to learn how to make
   changes in your own local development environment.
 
-{{% alert title="Contributor License Agreement (CLA)" color=warning %}}
+## Generative AI contribution policy {#using-ai}
 
-All contributors are required to [sign a Contributor License Agreement
-(CLA)][CLA] before changes can be reviewed and merged.
+> [!WARNING] **First time contributors** take note!
+>
+> If you are a [first-time contributor], please note the following:
+>
+> Your first 3 contributions to our repository must be primarily human-written,
+> with only minor AI assistance allowed
+> ([AIL1](https://danielmiessler.com/blog/ai-influence-level-ail)). This means
+> your code should be written by hand, but AI may assist with code completion,
+> formatting, linting, and following best practices. Your PR description must be
+> entirely human-written, with no AI involvement (AIL0).
+>
+> Of course, you can use AI tools to ask questions and learn about our
+> repository, our project, how to contribute, and more.
+>
+> We put this requirement in place to help you learn while contributing and to
+> help maintainers and approvers to protect their time and bandwidth, which is a
+> scarce resource.
+>
+> Maintainers may make an exception, if it is clear that your contribution is
+> "drive-by" and can be merged without a lot of additional effort from their
+> side.
 
-[CLA]: ../prerequisites/#cla
+Generative AI is allowed, but **you are responsible** for **reviewing and
+_validating_** all AI-generated content &mdash; if you don't understand it,
+don't submit it!
 
-{{% /alert %}}
+For details, see our [Generative AI Contribution Policy][].
 
-{{% alert title="Tip: Draft status" %}}
+[first-time contributor]: ../#first-time-contributing
+[Generative AI Contribution Policy]:
+  https://github.com/open-telemetry/community/blob/main/policies/genai.md
 
-Set the status of your pull request to **Draft** to let maintainers know that
-the content isn't ready for review yet. Maintainers may still comment or do
-high-level reviews, though they won't review the content in full until you
-remove the draft status.
-
-{{% /alert %}}
+## How to contribute
 
 The following figure illustrates how to contribute new documentation.
 
@@ -43,7 +61,7 @@ flowchart LR
        B[Fork the repo in GitHub] --- C[Write docs in markdown<br>and build site with Hugo]
        C --- D[Push source to the fork]
        D --- E[Open a pull request]
-       E --- F[Sign the CNCF CLA]
+       E --- F[Sign the <a href="../prerequisites/#cla">CNCF CLA</a>]
     end
 
 classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px;
@@ -55,6 +73,13 @@ class first,second white
 ```
 
 _Figure 1. Contributing new content._
+
+> [!TIP]
+>
+> Set the status of your pull request to **Draft** to let maintainers know that
+> the content isn't ready for review yet. Maintainers may still comment or do
+> high-level reviews, though they won't review the content in full until you
+> remove the draft status.
 
 ## Using GitHub {#changes-using-github}
 
@@ -153,12 +178,10 @@ fix:submodule
 fix:text
 ```
 
-{{% alert title="Pro tip" %}}
-
-You can also run the `fix` commands locally. For the complete list of fix
-commands, run `npm run -s '_list:fix:*'`.
-
-{{% /alert %}}
+> [!TIP] Pro tip
+>
+> You can also run the `fix` commands locally. For the complete list of fix
+> commands, run `npm run -s '_list:fix:*'`.
 
 ## Working locally {#fork-the-repo}
 
@@ -348,10 +371,8 @@ _Figure 4. Steps to open a PR from your fork to_
 1. From the **compare** drop-down menu, select your branch.
 1. Select **Create Pull Request**.
 1. Add a description for your pull request:
-
    - **Title** (50 characters or less): Summarize the intent of the change.
    - **Description**: Describe the change in more detail.
-
      - If there is a related GitHub issue, include `Fixes #12345` or
        `Closes #12345` in the description so that GitHub's automation closes the
        mentioned issue after merging the PR. If there are other related PRs,
@@ -396,7 +417,7 @@ more information on pull request checks and how to fix errors automatically.
 ### Preview your changes {#preview-locally}
 
 Preview your changes locally before pushing them or opening a pull request. A
-preview lets you catch build errors or markdown formatting problems.
+preview lets you catch build errors or Markdown formatting problems.
 
 To build and serve the site locally with Hugo, run the following command:
 
@@ -531,6 +552,9 @@ Pull requests are merged when they comply with the following criteria:
 - Approved by at least one approver.
 - No failing PR checks.
 - PR branch is up-to-date with the base branch.
+- Doc page changes [do not span locales][].
+
+[do not span locales]: ../localization/#prs-should-not-span-locales
 
 > **Important**
 >

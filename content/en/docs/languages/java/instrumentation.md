@@ -8,7 +8,6 @@ aliases:
   - libraries
 weight: 10
 description: Instrumentation ecosystem in OpenTelemetry Java
-cSpell:ignore: logback
 ---
 
 <!-- markdownlint-disable no-duplicate-heading -->
@@ -29,11 +28,13 @@ instrumentation topics:
 - [Log instrumentation](#log-instrumentation), which is used to get logs from an
   existing Java logging framework into OpenTelemetry.
 
-{{% alert %}} While [instrumentation categories](#instrumentation-categories)
-enumerates several options for instrumenting an application, we recommend users
-start with the [Java agent](#zero-code-java-agent). The Java agent has a simple
-installation process, and automatically detects and installs instrumentation
-from a large library. {{% /alert %}}
+> [!NOTE]
+>
+> While [instrumentation categories](#instrumentation-categories) enumerates
+> several options for instrumenting an application, we recommend users start
+> with the [Java agent](#zero-code-java-agent). The Java agent has a simple
+> installation process, and automatically detects and installs instrumentation
+> from a large library.
 
 ## Instrumentation categories
 
@@ -104,13 +105,36 @@ instrumentation maintained by OpenTelemetry in
 [opentelemetry-java-instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation)
 as a temporary means of filling the gap.
 
-{{% docs/languages/native-libraries "java" %}}
+Native instrumentation should interact with the OpenTelemetry Java agent as
+follows: On startup, the Java agent initializes an
+[OpenTelemetry](../api/#opentelemetry) instance and installs
+[zero-code](#zero-code-java-agent) instrumentation. Libraries adding native
+instrumentation should allow users to customize the `OpenTelemetry` instance
+used, but should automatically use the instance initialized by the Java agent
+(if present). See [GlobalOpenTelemetry](../api/#globalopentelemetry) for
+guidance on how to achieve this.
+
+{{% docs/languages/native-libraries %}}
 
 ### Manual instrumentation
 
 [Manual instrumentation](/docs/specs/otel/glossary/#manual-instrumentation) is
 written by application authors, and typically specific to the application
 domain.
+
+Manual instrumentation should interact with the OpenTelemetry Java agent as
+follows: On startup, the Java agent initializes an
+[OpenTelemetry](../api/#opentelemetry) instance and makes it accessible to
+application manual instrumentation via `GlobalOpenTelemetry`. However, the
+application owner may not be able to rely on the Java agent being installed all
+the time. For example, the Java agent may not be installed in local development,
+or test environments, or in special cases where the Java agent is removed for
+debugging reasons. Manual instrumentation should use the
+[OpenTelemetry](../api/#opentelemetry) instance initialized by the Java agent
+(if present), but should be able to detect and potentially set up a fallback
+`OpenTelemetry` instance if the Java agent is not present. See
+[GlobalOpenTelemetry](../api/#globalopentelemetry) for guidance on how to
+achieve this.
 
 ### Shims
 
@@ -124,7 +148,7 @@ Shims maintained in the OpenTelemetry Java ecosystem:
 | Bridge [OpenTracing](https://opentracing.io/) into OpenTelemetry                                              | [README](https://github.com/open-telemetry/opentelemetry-java/tree/main/opentracing-shim)                                                                                       | Traces          | `io.opentelemetry:opentelemetry-opentracing-shim:{{% param vers.otel %}}`                                                       |
 | Bridge [Opencensus](https://opencensus.io/) into OpenTelemetry                                                | [README](https://github.com/open-telemetry/opentelemetry-java/tree/main/opencensus-shim)                                                                                        | Traces, Metrics | `io.opentelemetry:opentelemetry-opencensus-shim:{{% param vers.otel %}}-alpha`                                                  |
 | Bridge [Micrometer](https://micrometer.io/) into OpenTelemetry                                                | [README](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/micrometer/micrometer-1.5/library)                                      | Metrics         | `io.opentelemetry.instrumentation:opentelemetry-micrometer-1.5:{{% param vers.instrumentation %}}-alpha`                        |
-| Bridge [JMX](https://docs.oracle.com/javase/7/docs/technotes/guides/management/agent.html) into OpenTelemetry | [README](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/jmx-metrics/javaagent/README.md)                                        | Metrics         | `io.opentelemetry.instrumentation:opentelemetry-jmx-metrics:{{% param vers.instrumentation %}}-alpha`                           |
+| Bridge [JMX](https://docs.oracle.com/javase/7/docs/technotes/guides/management/agent.html) into OpenTelemetry | [README](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/jmx-metrics/README.md)                                                  | Metrics         | `io.opentelemetry.instrumentation:opentelemetry-jmx-metrics:{{% param vers.instrumentation %}}-alpha`                           |
 | Bridge OpenTelemetry into [Prometheus Java client](https://github.com/prometheus/client_java)                 | [README](https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/prometheus-client-bridge)                                                                       | Metrics         | `io.opentelemetry.contrib:opentelemetry-prometheus-client-bridge:{{% param vers.contrib %}}-alpha`                              |
 | Bridge OpenTelemetry into [Micrometer](https://micrometer.io/)                                                | [README](https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/micrometer-meter-provider)                                                                      | Metrics         | `io.opentelemetry.contrib:opentelemetry-micrometer-meter-provider:{{% param vers.contrib %}}-alpha`                             |
 | Bridge [Log4j](https://logging.apache.org/log4j/2.x/index.html) into OpenTelemetry                            | [README](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/log4j/log4j-appender-2.17/library)                                      | Logs            | `io.opentelemetry.instrumentation:opentelemetry-log4j-appender-2.17:{{% param vers.instrumentation %}}-alpha`                   |
@@ -175,9 +199,6 @@ any which are applicable to the domain.
 OpenTelemetry Java [publishes artifacts](../api/#semantic-attributes) to assist
 in conforming to the semantic conventions, including generated constants for
 attribute keys and values.
-
-TODO: discuss instrumentation API and how it helps conform to semantic
-conventions
 
 ## Log instrumentation
 
@@ -235,9 +256,7 @@ Log correlation with traces is available by installing a [shim](#shims) to
 bridge OpenTelemetry context into the log framework. See "Bridge OpenTelemetry
 context into Log4j", "Bridge OpenTelemetry context into Logback" entries.
 
-{{% alert title="Note" color="info" %}}
-
-An end-to-end example of log instrumentation using stdout is available in the
-[Java examples repository](https://github.com/open-telemetry/opentelemetry-java-examples/blob/main/logging-k8s-stdout-otlp-json/README.md).
-
-{{% /alert %}}
+> [!NOTE]
+>
+> An end-to-end example of log instrumentation using stdout is available in the
+> [Java examples repository](https://github.com/open-telemetry/opentelemetry-java-examples/blob/main/logging-k8s-stdout-otlp-json/README.md).

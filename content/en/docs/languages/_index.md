@@ -5,7 +5,9 @@ description:
   languages
 weight: 250
 aliases: [/docs/instrumentation]
-redirects: [{ from: /docs/instrumentation/*, to: ':splat' }] # Only for `en`
+redirects:
+  - { from: /docs/instrumentation/*, to: ':splat' } # Only for `en`
+  - { from: 'net/*', to: 'dotnet/:splat' }
 ---
 
 OpenTelemetry code [instrumentation][] is supported for the languages listed in
@@ -26,17 +28,16 @@ application.
 The current status of the major functional components for OpenTelemetry is as
 follows:
 
-{{% alert title="Important" color="warning" %}}
-
-Regardless of an API/SDK's status, if your instrumentation relies on [semantic
-conventions] that are marked as [Experimental] in the [semantic conventions
-specification], your data flow might be subject to **breaking changes**.
-
-[semantic conventions]: /docs/concepts/semantic-conventions/
-[Experimental]: /docs/specs/otel/document-status/
-[semantic conventions specification]: /docs/specs/semconv/
-
-{{% /alert %}}
+> [!WARNING]
+>
+> Regardless of an API/SDK's status, if your instrumentation relies on [semantic
+> conventions][semconv] that are marked as [Experimental] in the [semantic
+> conventions specification][semconv-spec], your data flow might be subject to
+> **breaking changes**.
+>
+> [semconv]: /docs/concepts/semantic-conventions/
+> [Experimental]: /docs/specs/otel/document-status/
+> [semconv-spec]: /docs/specs/semconv/
 
 {{% telemetry-support-table " " %}}
 
@@ -48,11 +49,9 @@ references are available:
 
 {{% apidocs %}}
 
-{{% alert title="Note" color="info" %}}
-
-The list above is aliased to [`/api`](/api).
-
-{{% /alert %}}
+> [!NOTE]
+>
+> The list above is aliased to [`/api`](/api).
 
 [zero-code]: /docs/platforms/kubernetes/operator/automatic/
 [instrumentation]: /docs/concepts/instrumentation/

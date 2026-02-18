@@ -1,4 +1,4 @@
-# cspell:ignore ebpf postgres
+# cspell:ignore ebpf matic postgres protable
 plugins:
   '@textlint/markdown':
     extensions: [.yml]
@@ -19,8 +19,11 @@ filters:
       # src attribute in figure Hugo template:
       - /src=".*?"/
       # Other:
-      - /<https?://.*?>/ # Raw URLs
+      - /<https?:\/\/.*?>/ # Raw URLs
 rules:
+  prh:
+    rulePaths:
+      - ./prh/ja.yml
   terminology:
     defaultTerms: false
     skip: []
@@ -49,6 +52,7 @@ rules:
       - HTTPS
       - ID
       - iOS
+      - Istio
       - Jaeger
       - JavaScript
       - JBoss
@@ -63,7 +67,9 @@ rules:
       - Laravel
       - MacBook
       - macOS
+      - Markdown
       - MongoDB
+      - mTLS
       - MySQL
       - NDJSON
       - Netlify
@@ -126,6 +132,7 @@ rules:
         - '(?<=(^|\s))(?:\bdot|\.)net\b'
         - .NET
       - [ebpf, eBPF]
+      - [epbf, eBPF] # cSpell:disable-line
       - ['http[ /]?2(?:\.0)?', HTTP/2]
       - [he(/| or )she, they]
       - [\(s\)he, they]
@@ -143,15 +150,24 @@ rules:
       - [nd-?json, NDJSON]
       - [node\.?js, Node.js]
       - [open-source, open source]
-      - # OpenTelemetry, exclude occurrences like:
+
+      - # OpenTelemetry rule
+        #
+        # Use to catch typos like: # cSpell:disable-next
+        # - OpenTelemtry, opentelementry
+        #
+        # We exclude (i.e., allow) occurrences like:
         # - Compound names: go.opentelemetry.io
         # - Paths: medium.com/opentelemetry
         # - Repo names: opentelemetry-cpp or ocaml-opentelemetry
         # - Repo names: open-telemetry/opentelemetry-cpp
         # - Slack or social media anchors: #opentelemetry or @opentelemetry
-        - '(?<![-#@./])\bopen[- ]?telemetry\b(?![-./])'
+        # cSpell:ignore teleme
+        - '(?<![-#@./])\bopen[- ]?teleme?n?try\b(?![-./])'
         - OpenTelemetry
+
       - [os x, macOS]
+      - [protable, portable]
       - [postgres, PostgreSQL]
       - ['psr[ -]?([0-9]+)', PSR-$1]
       - ['react[ .]js', React]
@@ -163,6 +179,7 @@ rules:
       - ["uid['’]?(s)?", UID$1]
       - ['(walk)-(throughs?)', $1$2] # cSpell:disable-line
       - ['(work)-(arounds?)', $1$2]
+
       # Enable the following to find and replace "instrumentation module/package" with "instrumentation library":
       # - ["(auto(matic)?[- ])?instrumentation (module|package)", "instrumentation library"]
       # - ["(auto(matic)?[- ])?instrumentation (modules|packages)", "instrumentation libraries"]

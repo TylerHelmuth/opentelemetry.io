@@ -1,18 +1,18 @@
 ---
 title: Python
 description: >-
-  <img width="35" class="img-initial" src="/img/logos/32x32/Python_SDK.svg"
-  alt="Python"> Uma implementação específica de linguagem do OpenTelemetry em
-  Python.
+  <img width="35" class="img-initial otel-icon"
+  src="/img/logos/32x32/Python_SDK.svg" alt="Python"> Uma implementação
+  específica de linguagem do OpenTelemetry em Python.
 weight: 22
-default_lang_commit: 3fd0bb513e5d3fa6f178a73584322bcc469f15e0
+default_lang_commit: 505e2d1d650a80f8a8d72206f2e285430bc6b36a
 ---
 
-{{% pt/docs/languages/index-intro python /%}}
+{{% docs/languages/index-intro python /%}}
 
 ## Suporte de Versão {#status-and-releases}
 
-O OpenTelemetry suporta a versão Python 3.8 e superiores.
+O OpenTelemetry suporta a versão Python 3.9 e superiores.
 
 ## Instalação {#installation}
 
@@ -45,10 +45,10 @@ diretórios.
 ## Extensões {#extensions}
 
 Para encontrar projetos relacionados como exporters, bibliotecas de
-instrumentação, implementações de rastros, etc., visite o
+instrumentação, implementações de rastreadores, etc., visite o
 [Registro](/ecosystem/registry/?s=python).
 
-### Instalando Pacotes de Ponta (#installing-cutting-edge-packages)
+### Instalando Pacotes de Ponta {#installing-cutting-edge-packages}
 
 Há algumas funcionalidades que ainda não foram lançadas no PyPI. Nessa situação,
 você pode querer instalar os pacotes diretamente do repositório. Isso pode ser

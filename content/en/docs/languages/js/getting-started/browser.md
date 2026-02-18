@@ -5,7 +5,7 @@ description: Learn how to add OpenTelemetry to your browser app
 weight: 20
 ---
 
-{{% include "./_browser-instrumentation-warning.md" %}}
+{{% include browser-instrumentation-warning.md %}}
 
 While this guide uses the example application presented below, the steps to
 instrument your own application should be similar.
@@ -239,11 +239,20 @@ developer toolbar you should see some traces being exported:
 ### Add Instrumentations
 
 If you want to instrument Ajax requests, User Interactions and others, you can
-register additional instrumentations for those:
+add the additional instrumentation libraries and register them:
+
+```sh
+npm install @opentelemetry/instrumentation-user-interaction \
+  @opentelemetry/instrumentation-xml-http-request \
+```
 
 ```javascript
+import { UserInteractionInstrumentation } from '@opentelemetry/instrumentation-user-interaction';
+import { XMLHttpRequestInstrumentation } from '@opentelemetry/instrumentation-xml-http-request';
+
 registerInstrumentations({
   instrumentations: [
+    new DocumentLoadInstrumentation(),
     new UserInteractionInstrumentation(),
     new XMLHttpRequestInstrumentation(),
   ],

@@ -3,7 +3,19 @@ title: Documentation style guide
 description: Terminology and style when writing OpenTelemetry docs.
 linkTitle: Style guide
 weight: 20
-cSpell:ignore: open-telemetry postgre style-guide textlintrc
+params:
+  alertExamples: |
+    > [!TIP]
+    >
+    > If you are writing new content, generally prefer using this blockquote alert
+    > syntax instead of the Docsy
+    > [alert shortcode](https://www.docsy.dev/docs/content/shortcodes/#alert).
+
+    > [!WARNING] :warning: Blank line required!
+    >
+    > This site uses the [Prettier] formatter, and it requires an empty line
+    > separating the alert tag/title from the alert body.
+cSpell:ignore: postgre
 ---
 
 We don't have an official style guide yet, but the current OpenTelemetry
@@ -15,17 +27,17 @@ documentation style is inspired by the following style guides:
 The following sections contain guidance that is specific to the OpenTelemetry
 project.
 
-{{% alert title="Note" color="primary" %}}
+> [!NOTE]
+>
+> Many requirements of our style guide can be enforced by running automation:
+> before submitting a [pull request][] (PR), run `npm run fix:all` on your local
+> machine and commit the changes.
+>
+> If you run into errors or [failed PR checks](../pr-checks), read about our
+> style guide and learn what you can do to fix certain common issues.
 
-Many requirements of our style guide can be enforced by running automation:
-before submitting a
-[pull request](https://docs.github.com/en/get-started/learning-about-github/github-glossary#pull-request)
-(PR), run `npm run fix:all` on your local machine and commit the changes.
-
-If you run into errors or [failed PR checks](../pr-checks), read about our style
-guide and learn what you can do to fix certain common issues.
-
-{{% /alert %}}
+[pull request]:
+  https://docs.github.com/en/get-started/learning-about-github/github-glossary#pull-request
 
 ## OpenTelemetry.io word list
 
@@ -47,28 +59,54 @@ are properly written and use the original capitalization. For example, write
 [`.textlintrc.yml`](https://github.com/open-telemetry/opentelemetry.io/blob/main/.textlintrc.yml)
 file.
 
-{{% alert title="Tip" %}}
+## Markdown
 
-Run `npm run check:text` to verify that all terms and words are written
-properly.
+Site pages are written in the Markdown syntax supported by the [Goldmark]
+Markdown renderer. For the full list of supported Markdown extensions, see
+[Goldmark].
 
-Run `npm run check:text -- --fix` to fix terms and words that are not written
-properly.
+You can also use the following Markdown extensions:
 
-{{% /alert %}}
+- [Alerts](#alerts)
+- [Emojis]: for the complete list of available emojis, see [Emojis] from the
+  Hugo docs.
 
-## Markdown standards
+[Emojis]: https://gohugo.io/quick-reference/emojis/
+
+### Alerts
+
+You can write alerts using the following extended syntax:
+
+- [GitHub-flavored Markdown][GFM] (GFM) [alerts][gfm-alerts]
+- [Obsidian callout][] syntax for custom alert titles
+
+Here is an example of each:
+
+```markdown
+{{% _param alertExamples %}}
+```
+
+These render as:
+
+{{% _param alertExamples %}}
+
+For details about Hugo's blockquote alert syntax, see [Alerts][hugo-alerts] from
+the Hugo docs.
+
+[gfm-alerts]:
+  https://docs.github.com/en/contributing/style-guide-and-content-model/style-guide#alerts
+[GFM]: https://github.github.com/gfm/
+[Goldmark]: https://gohugo.io/configuration/markup/#goldmark
+[hugo-alerts]: https://gohugo.io/render-hooks/blockquotes/#alerts
+[Obsidian callout]: https://help.obsidian.md/callouts
+
+### Markdown checks {#markdown-standards}
 
 To enforce standards and consistency for Markdown files, all files should follow
 certain rules, enforced by [markdownlint]. For a full list, check the
-[.markdownlint.json] file.
+[.markdownlint.yaml] and [.markdownlint-cli2.yaml] files.
 
-Run:
-
-- `npm run check:markdown` to ensure that all files follow our standards
-- `npm run fix:markdown` to fix Markdown-related formatting issues
-
-We also enforce markdown [file format](#file-format) and strip files of trailing
+We also enforce Markdown [file format](#file-format) and strip files of trailing
 whitespace. This precludes the [line break syntax] of 2+ spaces; use `<br>`
 instead or reformat your text.
 
@@ -80,11 +118,10 @@ OpenTelemetry website, see the
 [`.cspell.yml`](https://github.com/open-telemetry/opentelemetry.io/blob/main/.cspell.yml)
 file.
 
-Run `npm run check:spelling` to verify that all your words are spelled
-correctly. If `cspell` indicates an `Unknown word` error, verify if you wrote
-that word correctly. If so, add this word to the `cSpell:ignore` section at the
-top of your file. If no such section exists, you can add it to the front matter
-of a Markdown file:
+If `cspell` indicates an "Unknown word" error, check whether you wrote the word
+correctly. If so, add the word to the `cSpell:ignore` section at the top of your
+file. If no such section exists, you can add it to the front matter of a
+Markdown file:
 
 ```markdown
 ---
@@ -102,24 +139,29 @@ might look like this:
 title: registryEntryTitle
 ```
 
-Website tooling normalizes page-specific dictionaries (that is, the
-`cSpell:ignore` word lists), by removing duplicate words, deleting words in the
-global word list, and sorting words. To normalize page-specific dictionaries,
-run `npm run fix:dict`.
-
 ## File format
 
-We enforce file formatting using [Prettier]. Invoke it using
-`npm run fix:format`.
+We use [Prettier] to enforce file formatting. Invoke it using:
+
+- `npm run fix:format` to format all files
+- `npm run fix:format:diff` to format only the files that have changed since the
+  last commit
+- `npm run fix:format:staged` to format only the files that are staged for the
+  next commit
 
 ## File names
 
 All file names should be in
-[kebab case](https://en.wikipedia.org/wiki/Letter_case#Kebab_case). Run
-`npm run fix:filenames` to automatically rename your files.
+[kebab case](https://en.wikipedia.org/wiki/Letter_case#Kebab_case).
 
-[.markdownlint.json]:
-  https://github.com/open-telemetry/opentelemetry.io/blob/main/.markdownlint.json
+## Fixing validation issues
+
+To learn how to fix validation issues, see [Pull request checks](../pr-checks).
+
+[.markdownlint.yaml]:
+  https://github.com/open-telemetry/opentelemetry.io/blob/main/.markdownlint.yaml
+[.markdownlint-cli2.yaml]:
+  https://github.com/open-telemetry/opentelemetry.io/blob/main/.markdownlint-cli2.yaml
 [line break syntax]: https://www.markdownguide.org/basic-syntax/#line-breaks
 [markdownlint]: https://github.com/DavidAnson/markdownlint
 [Prettier]: https://prettier.io

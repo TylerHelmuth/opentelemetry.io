@@ -12,74 +12,89 @@ generator which uses [Locust](https://locust.io/) to fake user traffic.
 ```mermaid
 graph TD
 subgraph Service Diagram
-accountingservice(Accounting Service):::dotnet
-adservice(Ad Service):::java
+accounting(Accounting):::dotnet
+ad(Ad):::java
 cache[(Cache<br/>&#40Valkey&#41)]
-cartservice(Cart Service):::dotnet
-checkoutservice(Checkout Service):::golang
-currencyservice(Currency Service):::cpp
-emailservice(Email Service):::ruby
+cart(Cart):::dotnet
+checkout(Checkout):::golang
+currency(Currency):::cpp
+email(Email):::ruby
 flagd(Flagd):::golang
-flagdui(Flagd-ui):::typescript
-frauddetectionservice(Fraud Detection Service):::kotlin
+flagd-ui(Flagd-ui):::elixir
+fraud-detection(Fraud Detection):::kotlin
 frontend(Frontend):::typescript
-frontendproxy(Frontend Proxy <br/>&#40Envoy&#41):::cpp
-imageprovider(Image Provider <br/>&#40nginx&#41):::cpp
-loadgenerator([Load Generator]):::python
-paymentservice(Payment Service):::javascript
-productcatalogservice(Product Catalog Service):::golang
-quoteservice(Quote Service):::php
-recommendationservice(Recommendation Service):::python
-shippingservice(Shipping Service):::rust
+frontend-proxy(Frontend Proxy <br/>&#40Envoy&#41):::cpp
+image-provider(Image Provider <br/>&#40nginx&#41):::cpp
+llm(LLM):::python
+load-generator([Load Generator]):::python
+payment(Payment):::javascript
+product-catalog(Product Catalog):::golang
+product-reviews(Product Reviews):::python
+quote(Quote):::php
+recommendation(Recommendation):::python
+shipping(Shipping):::rust
 queue[(queue<br/>&#40Kafka&#41)]:::java
 react-native-app(React Native App):::typescript
+postgresql[(Database<br/>&#40PostgreSQL&#41)]
 
-adservice ---->|gRPC| flagd
+accounting ---> postgresql
 
-checkoutservice -->|gRPC| cartservice
-checkoutservice --->|TCP| queue
-cartservice --> cache
-cartservice -->|gRPC| flagd
+ad ---->|gRPC| flagd
 
-checkoutservice -->|gRPC| shippingservice
-checkoutservice -->|gRPC| paymentservice
-checkoutservice --->|HTTP| emailservice
-checkoutservice -->|gRPC| currencyservice
-checkoutservice -->|gRPC| productcatalogservice
+checkout -->|gRPC| currency
+checkout -->|gRPC| cart
+checkout -->|TCP| queue
 
-frauddetectionservice -->|gRPC| flagd
+cart --> cache
+cart -->|gRPC| flagd
 
-frontend -->|gRPC| adservice
-frontend -->|gRPC| cartservice
-frontend -->|gRPC| checkoutservice
-frontend ---->|gRPC| currencyservice
-frontend ---->|gRPC| recommendationservice
-frontend -->|gRPC| productcatalogservice
+checkout -->|gRPC| payment
+checkout --->|HTTP| email
+checkout -->|gRPC| product-catalog
+checkout -->|HTTP| shipping
 
-frontendproxy -->|gRPC| flagd
-frontendproxy -->|HTTP| frontend
-frontendproxy -->|HTTP| flagdui
-frontendproxy -->|HTTP| imageprovider
+fraud-detection -->|gRPC| flagd
 
-Internet -->|HTTP| frontendproxy
+frontend -->|gRPC| ad
+frontend -->|gRPC| currency
+frontend -->|gRPC| cart
+frontend -->|gRPC| checkout
+frontend -->|HTTP| shipping
+frontend ---->|gRPC| recommendation
+frontend -->|gRPC| product-catalog
+frontend -->|gRPC| product-reviews
 
-loadgenerator -->|HTTP| frontendproxy
+frontend-proxy -->|gRPC| flagd
+frontend-proxy -->|HTTP| frontend
+frontend-proxy -->|HTTP| flagd-ui
+frontend-proxy -->|HTTP| image-provider
 
-paymentservice -->|gRPC| flagd
+llm -->|gRPC| flagd
+llm ---> product-reviews
 
-queue -->|TCP| accountingservice
-queue -->|TCP| frauddetectionservice
+payment -->|gRPC| flagd
 
-recommendationservice -->|gRPC| productcatalogservice
-recommendationservice -->|gRPC| flagd
+product-reviews -->|gRPC| flagd
+product-reviews -->|gRPC| product-catalog
+product-reviews -->|gRPC| llm
+product-reviews ---> postgresql
 
-shippingservice -->|HTTP| quoteservice
+queue -->|TCP| accounting
+queue -->|TCP| fraud-detection
 
-react-native-app -->|HTTP| frontendproxy
+recommendation -->|gRPC| flagd
+recommendation -->|gRPC| product-catalog
+
+shipping -->|HTTP| quote
+
+Internet -->|HTTP| frontend-proxy
+load-generator -->|HTTP| frontend-proxy
+react-native-app -->|HTTP| frontend-proxy
 end
 
 classDef dotnet fill:#178600,color:white;
 classDef cpp fill:#f34b7d,color:white;
+classDef elixir fill:#b294bb,color:black;
 classDef golang fill:#00add8,color:black;
 classDef java fill:#b07219,color:white;
 classDef javascript fill:#f1e05a,color:black;
@@ -92,10 +107,11 @@ classDef typescript fill:#e98516,color:black;
 ```
 
 ```mermaid
-graph TD
+graph LR
 subgraph Service Legend
   dotnetsvc(.NET):::dotnet
   cppsvc(C++):::cpp
+  elixirsvc(Elixir):::elixir
   golangsvc(Go):::golang
   javasvc(Java):::java
   javascriptsvc(JavaScript):::javascript
@@ -109,6 +125,7 @@ end
 
 classDef dotnet fill:#178600,color:white;
 classDef cpp fill:#f34b7d,color:white;
+classDef elixir fill:#b294bb,color:black;
 classDef golang fill:#00add8,color:black;
 classDef java fill:#b07219,color:white;
 classDef javascript fill:#f1e05a,color:black;
@@ -121,6 +138,7 @@ classDef typescript fill:#e98516,color:black;
 ```
 
 Follow these links for the current state of
+[log](/docs/demo/telemetry-features/log-coverage/),
 [metric](/docs/demo/telemetry-features/metric-coverage/) and
 [trace](/docs/demo/telemetry-features/trace-coverage/) instrumentation of the
 demo applications.
@@ -147,18 +165,25 @@ subgraph tdf[Telemetry Data Flow]
             oc-grpc[/"OTLP Receiver<br/>listening on<br/>grpc://localhost:4317"/]
             oc-http[/"OTLP Receiver<br/>listening on <br/>localhost:4318<br/>"/]
             oc-proc(Processors)
+            oc-spanmetrics[/"Span Metrics Connector"/]
             oc-prom[/"OTLP HTTP Exporter"/]
             oc-otlp[/"OTLP Exporter"/]
+            oc-opensearch[/"OpenSearch Exporter"/]
 
             oc-grpc --> oc-proc
             oc-http --> oc-proc
 
             oc-proc --> oc-prom
             oc-proc --> oc-otlp
+            oc-proc --> oc-opensearch
+            oc-proc --> oc-spanmetrics
+            oc-spanmetrics --> oc-prom
+
         end
 
         oc-prom -->|"localhost:9090/api/v1/otlp"| pr-sc
         oc-otlp -->|gRPC| ja-col
+        oc-opensearch -->|HTTP| os-http
 
         subgraph pr[Prometheus]
             style pr fill:#e75128,color:black;
@@ -183,6 +208,14 @@ subgraph tdf[Telemetry Data Flow]
             ja-db --> ja-http
         end
 
+        subgraph os[OpenSearch]
+            style os fill:#005eb8,color:black;
+            os-http[/"OpenSearch<br/>listening on<br/>localhost:9200"/]
+            os-db[(OpenSearch Index)]
+
+            os-http ---> os-db
+        end
+
         subgraph gr[Grafana]
             style gr fill:#f8b91e,color:black;
             gr-srv["Grafana Server"]
@@ -193,6 +226,7 @@ subgraph tdf[Telemetry Data Flow]
 
         pr-http --> |"localhost:9090/api"| gr-srv
         ja-http --> |"localhost:16686/api"| gr-srv
+        os-http --> |"localhost:9200/api"| gr-srv
 
         ja-b{{"Browser<br/>Jaeger UI"}}
         ja-http ---->|"localhost:16686/search"| ja-b

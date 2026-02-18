@@ -25,7 +25,7 @@ SDKs will assign the value `unknown_service` for this value, so it is
 recommended to set it explicitly, either in code or via setting the environment
 variable `OTEL_SERVICE_NAME`.
 
-Additionally, the SDK will also provides the following resource attributes to
+Additionally, the SDK will also provide the following resource attributes to
 identify itself: `telemetry.sdk.name`, `telemetry.sdk.language` and
 `telemetry.sdk.version`.
 
@@ -51,8 +51,8 @@ If applicable, use the
 [semantic conventions for your resource attributes](/docs/specs/semconv/resource).
 For example, you can provide the name of your
 [deployment environment](/docs/specs/semconv/resource/deployment-environment/)
-using `deployment.environment`:
+using `deployment.environment.name`:
 
 ```shell
-env OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production yourApp
+env OTEL_RESOURCE_ATTRIBUTES=deployment.environment.name=production yourApp
 ```

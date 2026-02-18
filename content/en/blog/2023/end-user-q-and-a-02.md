@@ -198,7 +198,7 @@ Uplight currently has a few different Collector configurations:
 
 Doug’s ultimate goal is for any deployment in any environment to be able to
 easily send telemetry to an
-[OTel Collector gateway](/docs/collector/deployment/gateway/).
+[OTel Collector gateway](/docs/collector/deploy/gateway/).
 
 Collectors at Uplight are typically run and maintained by the infrastructure
 team, unless individual teams decide to take ownership of their own Collectors.
@@ -265,8 +265,8 @@ to Jaeger.
 
 ## What's next?
 
-If you’d like to see my conversation with Doug in full, you can check out the
-video [here](https://www.youtube.com/watch?v=ptYWBF-R1Fc).
+If you’d like to see my conversation with Doug in full, there is a
+[video](https://www.youtube.com/watch?v=ptYWBF-R1Fc).
 
 If anyone would like to continue the conversation with Doug, please reach out to
 him in the
@@ -274,7 +274,7 @@ him in the
 channel!
 
 Also, be sure to check out more of Doug's OTel adventures at this month's
-[OTel in Practice series, on March 27th, 09:00 PT/11:00 ET](http://surl.li/fqdox).
+[OTel in Practice series, on March 27th, 09:00 PT/11:00 ET](https://surl.li/fqdox).
 
 ## Final Thoughts
 

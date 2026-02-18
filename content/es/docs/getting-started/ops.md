@@ -1,7 +1,7 @@
 ---
 title: Introducción para Operaciones
 linkTitle: Ops
-default_lang_commit: ede5b715791550eccf1c0dc3d57e2713ca6350ab
+default_lang_commit: 99a39c5e4e51daba968bfbb3eb078be4a14ad363
 ---
 
 Esta es tu página de [introducción](..) si:

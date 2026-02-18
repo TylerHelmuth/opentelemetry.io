@@ -2,8 +2,7 @@
 title: Performance
 description: Performance reference for the OpenTelemetry Java agent
 weight: 400
-aliases:
-  - /docs/languages/java/performance/
+aliases: [/docs/languages/java/performance]
 cSpell:ignore: Dotel
 ---
 
@@ -92,9 +91,11 @@ increase agent overhead. For more information on how to turn off unnecessary
 instrumentations, see
 [Turn off specific instrumentations](#turn-off-specific-instrumentations).
 
-> [!NOTE] Experimental features of the Java agent might increase agent overhead
-> due to the experimental focus on functionality over performance. Stable
-> features are safer in terms of agent overhead.
+> [!NOTE]
+>
+> Experimental features of the Java agent might increase agent overhead due to
+> the experimental focus on functionality over performance. Stable features are
+> safer in terms of agent overhead.
 
 ## Troubleshooting agent overhead issues
 
@@ -173,13 +174,11 @@ times. This repetition helps to ensure a representative data sample. Include
 error scenarios in your test data. Simulate an error rate similar to that of a
 normal workload, typically between 2% and 10%.
 
-{{% alert title="Note" color="info" %}}
-
-Tests might increase costs when targeting observability backends and other
-commercial services. Plan your tests accordingly or consider using alternative
-solutions, such as self-hosted or locally run backends.
-
-{{% /alert %}}
+> [!NOTE]
+>
+> Tests might increase costs when targeting observability backends and other
+> commercial services. Plan your tests accordingly or consider using alternative
+> solutions, such as self-hosted or locally run backends.
 
 ### Collect comparable measurements
 

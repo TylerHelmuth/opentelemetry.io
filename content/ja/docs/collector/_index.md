@@ -2,9 +2,10 @@
 title: コレクター
 description: テレメトリーデータを受信、処理、エクスポートするためのベンダー非依存な方法
 cascade:
-  vers: 0.119.0
+  vers: 0.135.0
 weight: 270
-default_lang_commit: fd7da211d5bc37ca93112a494aaf6a94445e2e28
+default_lang_commit: 276d7eb3f936deef6487cdd2b1d89822951da6c8
+drifted_from_default: true
 ---
 
 ![Jaeger、OTLP、Prometheusを統合したOpenTelemetryコレクターのダイアグラム](img/otel-collector.svg)
@@ -14,7 +15,6 @@ default_lang_commit: fd7da211d5bc37ca93112a494aaf6a94445e2e28
 OpenTelemetryコレクターは、テレメトリーデータの受信、処理、エクスポート方法について、ベンダーにとらわれない実装を提供します。
 複数のエージェント／コレクターの実行、操作、メンテナンスの必要性を取り除きます。
 これはスケーラビリティを向上させ、1つ以上のオープンソースまたは商用バックエンドに送信するオープンソースのオブザーバビリティデータフォーマット（Jaeger、Prometheus、Fluent Bitなど）をサポートします。
-ローカルのコレクターエージェントは、計装ライブラリがテレメトリーデータをエクスポートするデフォルトの場所です。
 
 ## 目的 {#objectives}
 
@@ -39,11 +39,11 @@ OpenTelemetryを試したり始めたりするには、バックエンドに直�
 [コレクターのセットアップ](quick-start)も、思っているより簡単です。
 各言語のデフォルトのOTLPエクスポーターは、ローカルコレクターのエンドポイントを想定しているので、コレクターを起動すると、自動的にテレメトリーの受信を開始します。
 
-## Collector security {#collector-security}
+## コレクターのセキュリティ {#collector-security}
 
 ベストプラクティスに従い、コレクターが安全に[ホスト][hosted]と[設定][configured]されていることを確認してください。
 
-## ステータスとリリース {#status-and-releases}
+## ステータス {#status}
 
 **コレクター**のステータスは、コレクターのコアコンポーネントが現在、[安定性レベル][stability levels]がまちまちであるため、 [混合状態（mixed）][mixed] となっています。
 
@@ -51,10 +51,17 @@ OpenTelemetryを試したり始めたりするには、バックエンドに直�
 各コンポーネントの安定性は `README.md` で明記されています。
 利用可能なコレクターコンポーネントの一覧は、[レジストリ][registry] にあります。
 
-{{% docs/latest-release collector-releases /%}}
+コレクターのソフトウェアのアーティファクトは、対象となる利用者に応じた一定の期間、サポートが保証されます。
+このサポートには、最低限、重大なバグやセキュリティ問題の修正が含まれます。
+詳細については、[サポートポリシー](https://github.com/open-telemetry/opentelemetry-collector/blob/main/VERSIONING.md) を参照してください。
 
-[registry]: /ecosystem/registry/?language=collector
-[hosted]: /docs/security/hosting-best-practices/
+## ディストリビューションとリリース {#releases}
+
+[最新のリリース][latest release] を含むコレクターの配布とリリースについての情報は、[ディストリビューション](distributions/) を確認してください。
+
 [configured]: /docs/security/config-best-practices/
+[hosted]: /docs/security/hosting-best-practices/
+[latest release]: https://github.com/open-telemetry/opentelemetry-collector-releases/releases/latest
 [mixed]: /docs/specs/otel/document-status/#mixed
+[registry]: /ecosystem/registry/?language=collector
 [stability levels]: https://github.com/open-telemetry/opentelemetry-collector#stability-levels

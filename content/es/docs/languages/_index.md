@@ -5,6 +5,7 @@ description:
   lenguajes de programación populares.
 weight: 250
 default_lang_commit: 3815d1481fe753df10ea3dc26cbe64dba0230579
+drifted_from_default: true
 ---
 
 La [instrumentación][] de código de OpenTelemetry es compatible con los
@@ -29,8 +30,8 @@ el siguiente:
 {{% alert title="Importante" color="warning" %}}
 
 Independientemente del estado de un API/SDK, si tu instrumentación depende de
-[convenciones semánticas] que estén marcadas como [Experimental] en la
-[especificación de convenciones semánticas], tu flujo de datos podría estar
+[convenciones semánticas][] que estén marcadas como [Experimental] en la
+[especificación de convenciones semánticas][], tu flujo de datos podría estar
 sujeto a **cambios importantes**.
 
 [convenciones semánticas]: /docs/concepts/semantic-conventions/
@@ -49,7 +50,7 @@ desarrolladores. Las siguientes referencias están disponibles:
 
 {{% apidocs %}}
 
-{{% alert title="Consejo" color="info" %}}
+{{% alert title="Consejo" %}}
 
 Puedes encontrar una lista de referencias de API disponibles en </api-docs>.
 

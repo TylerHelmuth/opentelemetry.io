@@ -3,12 +3,12 @@ title: Target Allocator
 cSpell:ignore: bleh targetallocator
 ---
 
-If you’ve enabled
+If you've enabled
 [Target Allocator](/docs/platforms/kubernetes/operator/target-allocator/)
 service discovery on the
 [OpenTelemetry Operator](/docs/platforms/kubernetes/operator/), and the Target
 Allocator is failing to discover scrape targets, there are a few troubleshooting
-steps that you can take to help you understand what’s going on and restore
+steps that you can take to help you understand what's going on and restore
 normal operation.
 
 ## Troubleshooting steps
@@ -18,9 +18,9 @@ normal operation.
 As a first step, make sure that you have deployed all relevant resources to your
 Kubernetes cluster.
 
-### Do you know if metrics are actually being scraped?
+### Do you know if metrics are actually being scraped?
 
-After you’ve deployed all of your resources to Kubernetes, make sure that the
+After you've deployed all of your resources to Kubernetes, make sure that the
 Target Allocator is discovering scrape targets from your
 [`ServiceMonitor`](https://prometheus-operator.dev/docs/getting-started/design/#servicemonitor)(s)
 or [PodMonitor]s.
@@ -101,10 +101,6 @@ spec:
               scrape_interval: 10s
               static_configs:
                 - targets: ['0.0.0.0:8888']
-
-    processors:
-      batch: {}
-
     exporters:
       debug:
         verbosity: detailed
@@ -113,15 +109,12 @@ spec:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [batch]
           exporters: [debug]
         metrics:
           receivers: [otlp, prometheus]
-          processors: []
           exporters: [debug]
         logs:
           receivers: [otlp]
-          processors: [batch]
           exporters: [debug]
 ```
 
@@ -137,15 +130,13 @@ Where `otelcol-targetallocator` is the value of `metadata.name` in your
 `opentelemetry` is the namespace to which the `OpenTelemetryCollector` CR is
 deployed.
 
-{{% alert title="Tip" %}}
-
-You can also get the service name by running
-
-```shell
-kubectl get svc -l app.kubernetes.io/component=opentelemetry-targetallocator -n <namespace>
-```
-
-{{% /alert %}}
+> [!TIP]
+>
+> You can also get the service name by running
+>
+> ```shell
+> kubectl get svc -l app.kubernetes.io/component=opentelemetry-targetallocator -n <namespace>
+> ```
 
 Next, get a list of jobs registered with the Target Allocator:
 
@@ -284,22 +275,20 @@ The query parameter `collector_id` in the `_link` field of the above output
 states that these are the targets pertain to `otelcol-collector-0` (the name of
 the `StatefulSet` created for the `OpenTelemetryCollector` resource).
 
-{{% alert title="Note" %}}
-
-See the
-[Target Allocator readme](https://github.com/open-telemetry/opentelemetry-operator/blob/main/cmd/otel-allocator/README.md?plain=1#L128-L134)
-for more information on the `/jobs` endpoint.
-
-{{% /alert %}}
+> [!NOTE]
+>
+> See the
+> [Target Allocator readme](https://github.com/open-telemetry/opentelemetry-operator/blob/main/cmd/otel-allocator/README.md?plain=1#L128-L134)
+> for more information on the `/jobs` endpoint.
 
 ### Is the Target Allocator enabled? Is Prometheus service discovery enabled?
 
-If the `curl` commands above don’t show a list of expected `ServiceMonitor`s and
+If the `curl` commands above don't show a list of expected `ServiceMonitor`s and
 `PodMonitor`s, you need to check whether the features that populate those values
 are turned on.
 
 One thing to remember is that just because you include the `targetAllocator`
-section in the `OpenTelemetryCollector` CR doesn’t mean that it’s enabled. You
+section in the `OpenTelemetryCollector` CR doesn't mean that it's enabled. You
 need to explicitly enable it. Furthermore, if you want to use
 [Prometheus service discovery](https://github.com/open-telemetry/opentelemetry-operator/blob/main/cmd/otel-allocator/README.md#discovery-of-prometheus-custom-resources),
 you must explicitly enable it:
@@ -325,7 +314,7 @@ spec:
 ```
 
 See the full `OpenTelemetryCollector`
-[resource definition in "Do you know if metrics are actually being scraped?"](#do-you-know-if-metrics-are-actually-beingscraped).
+[resource definition in "Do you know if metrics are actually being scraped?"](#do-you-know-if-metrics-are-actually-being-scraped).
 
 ### Did you configure a ServiceMonitor (or PodMonitor) selector?
 
@@ -333,10 +322,10 @@ If you configured a
 [`ServiceMonitor`](https://observability.thomasriley.co.uk/prometheus/configuring-prometheus/using-service-monitors/)
 selector, it means that the Target Allocator only looks for `ServiceMonitors`
 having a `metadata.label` that matches the value in
-[`serviceMonitorSelector`](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#opentelemetrycollectorspectargetallocatorprometheuscr-1).
+[`serviceMonitorSelector`](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api/targetallocators.md#targetallocatorspecprometheuscrservicemonitorselector).
 
 Suppose that you configured a
-[`serviceMonitorSelector`](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#opentelemetrycollectorspectargetallocatorprometheuscr-1)
+[`serviceMonitorSelector`](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api/targetallocators.md#targetallocatorspecprometheuscrservicemonitorselector)
 for your Target Allocator, like in the following example:
 
 ```yaml
@@ -374,7 +363,7 @@ spec:
 ```
 
 See the full `ServiceMonitor`
-[resource definition in "Do you know if metrics are actually being scraped?"](#do-you-know-if-metrics-are-actually-beingscraped).
+[resource definition in "Do you know if metrics are actually being scraped?"](#do-you-know-if-metrics-are-actually-being-scraped).
 
 In this case, the `OpenTelemetryCollector` resource's
 `prometheusCR.serviceMonitorSelector.matchLabels` is looking only for
@@ -384,13 +373,10 @@ example.
 If your `ServiceMonitor` resource is missing that label, then the Target
 Allocator will fail to discover scrape targets from that `ServiceMonitor`.
 
-{{% alert title="Tip" %}}
-
-The same applies if you’re using a [PodMonitor]. In that case, you would use a
-[`podMonitorSelector`](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#opentelemetrycollectorspectargetallocatorprometheuscr)
-instead of a `serviceMonitorSelector`.
-
-{{% /alert %}}
+> [!TIP]
+>
+> The same applies if you're using a [PodMonitor]. In that case, you would use a
+> [`podMonitorSelector`] instead of a `serviceMonitorSelector`.
 
 ### Did you leave out the serviceMonitorSelector and/or podMonitorSelector configuration altogether?
 
@@ -401,13 +387,13 @@ results in the Target Allocator failing to discover scrape targets from your
 `ServiceMonitors` and `PodMonitors`, respectively.
 
 Similarly, in
-[`v1beta1`](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#opentelemetrycollector-1)
+[`v1beta1`](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api/opentelemetrycollectors.md#opentelemetryiov1beta1)
 of the `OpenTelemetryCollector` CR, leaving out this configuration altogether
 also results in the Target Allocator failing to discover scrape targets from
 your `ServiceMonitors` and `PodMonitors`.
 
 As of `v1beta1` of the `OpenTelemetryOperator`, a `serviceMonitorSelector` and
-`podMonitorSelector` must be included, even if you don’t intend to use it, like
+`podMonitorSelector` must be included, even if you don't intend to use it, like
 this:
 
 ```yaml
@@ -419,7 +405,7 @@ prometheusCR:
 
 This configuration means that it will match on all `PodMonitor` and
 `ServiceMonitor` resources. See the
-[full OpenTelemetryCollector definition in "Do you know if metrics are actually being scraped?"](#do-you-know-if-metrics-are-actually-beingscraped).
+[full OpenTelemetryCollector definition in "Do you know if metrics are actually being scraped?"](#do-you-know-if-metrics-are-actually-being-scraped).
 
 ### Do your labels, namespaces, and ports match for your ServiceMonitor and your Service (or PodMonitor and your Pod)?
 
@@ -485,7 +471,7 @@ spec:
 
 The following `Service` resource would not be picked up, because the
 `ServiceMonitor` is looking for ports named `prom`, `py-client-port`, _or_
-`py-server-port`, and this service’s port is called `bleh`.
+`py-server-port`, and this service's port is called `bleh`.
 
 ```yaml
 apiVersion: v1
@@ -505,12 +491,12 @@ spec:
       port: 8080
 ```
 
-{{% alert title="Tip" %}}
+> [!TIP]
+>
+> If you're using `PodMonitor`, the same applies, except that it picks up
+> Kubernetes pods that match on labels, namespaces, and named ports.
 
-If you’re using `PodMonitor`, the same applies, except that it picks up
-Kubernetes pods that match on labels, namespaces, and named ports.
-
-{{% /alert %}}
-
+[`podMonitorSelector`]:
+  https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api/targetallocators.md#targetallocatorspecprometheuscr
 [PodMonitor]:
   https://prometheus-operator.dev/docs/developer/getting-started/#using-podmonitors

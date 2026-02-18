@@ -3,13 +3,14 @@ title: 什么是 OpenTelemetry？
 description: 简短说明 OpenTelemetry 是什么，不是什么。
 weight: 150
 default_lang_commit: d638c386
+drifted_from_default: true
 ---
 
 OpenTelemetry
 是一个[可观测性](/docs/concepts/observability-primer/#what-is-observability)框架和工具包，
 旨在创建和管理遥测数据，如[链路](/docs/concepts/signals/traces/)、
 [指标](/docs/concepts/signals/metrics/)和[日志](/docs/concepts/signals/logs/)。
-重要的是，OpenTelemetry 是供应商和工具无关的，这意味着它可以与各种可观测性后端一起使用，
+重要的是，OpenTelemetry 对供应商和工具是中立的，这意味着它可以与各种可观测性后端一起使用，
 包括 [Jaeger](https://www.jaegertracing.io/) 和
 [Prometheus](https://prometheus.io/) 这类开源工具以及商业化产品。
 

@@ -1,7 +1,3 @@
-# Words listed here are only for their spelling. If there is a certain way to
-# capitalize the word, add capitalization rules to text-lint rules in
-# .textlintrc.yml
-
 accountingservice
 actix
 adservice
@@ -25,9 +21,9 @@ cassandra
 checkoutservice
 Chronosphere
 classpath
+cmelius
 cncf
 configurator
-comms
 currencyservice
 daemonset
 datadog
@@ -44,6 +40,7 @@ featureflagservice
 flagd
 frauddetectionservice
 frontendproxy
+geoip
 github
 gitpod
 grafana
@@ -69,10 +66,11 @@ kubernetes
 laravel
 lifecycles
 lightstep
-Loffay
-Mancuso
+lockdown
+melius
 microservices
 mongodb
+multiplatform
 ndjson
 Neumann
 nginx
@@ -90,6 +88,7 @@ otel-endusers
 otelcol
 otep
 otlp
+Otmar
 packagist
 pageinfo
 Paixão
@@ -128,6 +127,7 @@ symfony
 tabpane
 textlint
 thanos
+timeframe
 tocstop
 tracecontext
 traceidratio
@@ -136,9 +136,12 @@ traceparent
 traefik
 Trask
 uids
+unconference
+unitless
 unsampled
 unshallow
 upstreamed
+upstreaming
 Villela
 wordpress
 WSGI

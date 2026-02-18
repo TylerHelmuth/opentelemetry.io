@@ -43,39 +43,39 @@ public class TracedClass {
   @WithSpan(kind = SpanKind.CLIENT)
   public void tracedClientSpan() {}
 
+  @WithSpan
   public void tracedMethodWithAttribute(@SpanAttribute("attributeName") String parameter) {}
 }
 ```
 <!-- prettier-ignore-end -->
 
-{{% alert title="Note" color="info" %}} The OpenTelemetry annotations use Spring
-AOP based on proxies.
+> [!NOTE]
+>
+> The OpenTelemetry annotations use Spring AOP based on proxies.
+>
+> These annotations work only for the methods of the proxy. You can learn more
+> in the
+> [Spring documentation](https://docs.spring.io/spring-framework/reference/core/aop/proxying.html).
+>
+> In the following example, the `WithSpan` annotation won't do anything when the
+> GET endpoint is called:
+>
+> ```java
+> @RestController
+> public class MyControllerManagedBySpring {
+>
+>     @GetMapping("/ping")
+>     public void aMethod() {
+>         anotherMethod();
+>     }
+>
+>     @WithSpan
+>     public void anotherMethod() {
+>     }
+> }
+> ```
 
-These annotations work only for the methods of the proxy. You can learn more in
-the
-[Spring documentation](https://docs.spring.io/spring-framework/reference/core/aop/proxying.html).
-
-In the following example, the `WithSpan` annotation won't do anything when the
-GET endpoint is called:
-
-```java
-@RestController
-public class MyControllerManagedBySpring {
-
-    @GetMapping("/ping")
-    public void aMethod() {
-        anotherMethod();
-    }
-
-    @WithSpan
-    public void anotherMethod() {
-    }
-}
-```
-
-{{% /alert %}}
-
-{{% alert title="Note" color="info" %}}
+{{% alert data-why="Using shortcode syntax because of tab panes" title="Note" %}}
 
 To be able to use the OpenTelemetry annotations, you have to add the Spring Boot
 Starter AOP dependency to your project:

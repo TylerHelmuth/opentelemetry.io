@@ -5,7 +5,7 @@ date: 2023-07-24
 author: '[Reese Lee](https://github.com/reese-lee) (New Relic)'
 body_class: otel-with-contributions-from
 # prettier-ignore
-cSpell:ignore: Aronoff autoscaler codepath fluentbit k8sattributesprocessor kubelet spanmetrics
+cSpell:ignore: Aronoff autoscaler codepath fluentbit k8sattributesprocessor kubelet spanmetrics statefulset
 ---
 
 With contributions from [Adriana Villela](https://github.com/avillela)
@@ -326,21 +326,21 @@ generated? One of a bunch of things."
 ### Kubernetes modes on OTel
 
 The OTel Operator supports four
-[deployment modes](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#opentelemetrycollectorspec)
+[deployment modes](https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api/opentelemetrycollectors.md)
 for the OTel Collector in Kubernetes:
 
 - [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) -
   see example
-  [here](https://github.com/open-telemetry/opentelemetry-operator/blob/main/tests/e2e/ingress/00-install.yaml)
+  [ingress/00-install.yaml](https://github.com/open-telemetry/opentelemetry-operator/blob/main/tests/e2e/ingress/00-install.yaml)
 - [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) -
   see example
-  [here](https://github.com/open-telemetry/opentelemetry-operator/blob/main/tests/e2e/daemonset-features/01-install.yaml)
+  [daemonset-features/01-install.yaml](https://github.com/open-telemetry/opentelemetry-operator/blob/main/tests/e2e/daemonset-features/01-install.yaml)
 - [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) -
   see example
-  [here](https://github.com/open-telemetry/opentelemetry-operator/blob/main/tests/e2e/smoke-statefulset/00-install.yaml)
+  [smoke-statefulset/00-install.yaml](https://github.com/open-telemetry/opentelemetry-operator/blob/main/tests/e2e/smoke-statefulset/00-install.yaml)
 - [Sidecar](https://www.techtarget.com/searchapparchitecture/tip/The-reasons-to-use-or-not-use-sidecars-in-Kubernetes) -
   see example
-  [here](https://github.com/open-telemetry/opentelemetry-operator/blob/main/tests/e2e/instrumentation-python/00-install-collector.yaml)
+  [instrumentation-python/00-install-collector.yaml](https://github.com/open-telemetry/opentelemetry-operator/blob/cd1d136a539820a87bbc26fa2d8ff1fb821bbcf1/tests/e2e/instrumentation-python/00-install-collector.yaml)
 
 Which ones you should use depends on what you need to do, such as how you like
 to run applications for reliability.
@@ -427,7 +427,7 @@ That's why OTel now has a really good Prometheus exporter, so it can do both."
 
 ### The centralized OTel Collector gateway
 
-There is a [centralized gateway](/docs/collector/deployment/gateway/) in-flight,
+There is a [centralized gateway](/docs/collector/deploy/gateway/) in-flight,
 which is part of the Collector chain Jacob mentioned earlier. The effort is
 centered around [Arrow](https://arrow.apache.org/). Lightstep has done some work
 around improving "the processing speed and ingress costs of OTel data by using

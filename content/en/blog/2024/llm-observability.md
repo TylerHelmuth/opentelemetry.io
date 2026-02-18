@@ -55,7 +55,6 @@ costs. Here are the key signals to monitor:
   variety of parameters (like `temperature` and `top_p`) that can drastically
   affect both the response quality and the cost. Specific aspects to monitor
   are:
-
   - **Temperature**: Indicates the level of creativity or randomness desired
     from the model's outputs. Varying this parameter can significantly impact
     the nature of the generated content.
@@ -73,7 +72,6 @@ costs. Here are the key signals to monitor:
 
 - **Response Metadata**: Given the API-based interaction with LLMs, tracking the
   specifics of the response is key for cost management and quality assessment:
-
   - **Tokens**: Directly impacts cost and is a measure of response length and
     complexity.
 
@@ -84,13 +82,11 @@ costs. Here are the key signals to monitor:
     perspective, providing insights into the model's output characteristics and
     potential areas of inefficiency or unexpected cost.
 
-{{% alert title="Note" %}}
-
-The LLM Working Group has recommended on capturing these details on events
-instead of span attributes because many backend systems can struggle with those
-often large payloads.
-
-{{% /alert %}}
+> [!NOTE]
+>
+> The LLM Working Group has recommended on capturing these details on events
+> instead of span attributes because many backend systems can struggle with
+> those often large payloads.
 
 ### Metrics
 
@@ -118,8 +114,7 @@ Before we begin, make sure you have the following running in your environment:
 
 ### Setting Up the OpenTelemetry Collector
 
-First, install the OpenTelemetry Collector. You can find how to do this in the
-installation guide [here](/docs/collector/installation/).
+First, [install the OpenTelemetry Collector](/docs/collector/install/).
 
 ### Configuring the Collector
 
@@ -229,9 +224,8 @@ any tool of your choice to visualize this data:
 
 #### Add the dashboard
 
-To make things easy, you can use the dashboard the OpenLIT team made. Just grab
-the JSON from
-[here](https://docs.openlit.io/latest/connections/prometheus-jaeger#dashboard).
+To make things easy, you can use
+[the OpenLIT's dashboard](https://docs.openlit.io/latest/connections/prometheus-jaeger#dashboard).
 
 This guide showed you how to use OpenTelemetry, Prometheus, Jaeger, and Grafana
 to monitor your LLM Applications.
